@@ -109,6 +109,11 @@ function! s:PyRef()
     let &isk = isk_save
   endtry
 
+  " Do something useful when there's nothing at the current position.
+  if ident == ''
+    return s:OpenBrowser(g:pyref_mirror . '/contents.html')
+  endif
+
   " Escape any dots in the expression so it can be used as a pattern.
   let pattern = substitute(ident, '\.', '\\.', 'g')
 
