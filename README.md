@@ -26,3 +26,9 @@ pathname of a working web browser executable, e.g. inside Vim type:
 If you have questions, bug reports, suggestions, etc. the author can be
 contacted at <peter@peterodding.com>. The latest version is available
 at <http://peterodding.com/code/vim/pyref> and <http://github.com/xolox/vim-pyref>.
+
+ LICENSE
+=========
+
+Vim-PyRef is licensed under the MIT license.
+Copyright 2010 Peter Odding <peter@peterodding.com>.

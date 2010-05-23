@@ -2,6 +2,7 @@
 " Maintainer: Peter Odding <peter@peterodding.com>
 " Last Change: May 23, 2010
 " URL: http://peterodding.com/code/vim/pyref
+" License: MIT
 
 " Description:
 " This is a Vim plug-in that maps <F1> in Python buffers to search the Python
@@ -100,13 +101,13 @@ function! s:PyRef()
 
   " Get the identifier under the cursor including any dots to match
   " identifiers like `os.path.join' instead of single words like `join'.
-	try
-		let isk_save = &isk
-		let &isk = '@,48-57,_,192-255,.'
-		let ident = expand('<cword>')
-	finally
-		let &isk = isk_save
-	endtry
+  try
+    let isk_save = &isk
+    let &isk = '@,48-57,_,192-255,.'
+    let ident = expand('<cword>')
+  finally
+    let &isk = isk_save
+  endtry
 
   " Escape any dots in the expression so it can be used as a pattern.
   let pattern = substitute(ident, '\.', '\\.', 'g')
