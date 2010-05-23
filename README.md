@@ -1,4 +1,4 @@
-The file `pyref.vim` is a plug-in for the Vim text editor that maps the `<F1>`
+The file [pyref.vim][formatted_pyref_vim] is a plug-in for the Vim text editor that maps the `<F1>`
 key in Python buffers to search through the Python language and library
 reference documentation for the keyword or identifier at the current cursor
 position and open the first match in your web browser. This works in both
@@ -6,19 +6,26 @@ graphical Vim and console Vim.
 
 The search works by scanning through a special index file with keyword, URL
 pairs separated by tabs and delimited by newlines. You can create this index
-yourself using a Python script I've written (see `create-index.py`) or you
-can download the index that I've already created (see `vimpythonindex`).
+yourself using a Python script I've written (see [create-index.py][formatted_create_index_py]) or you
+can download the index that I've already created (see [vimpythonindex][formatted_vimpythonindex]).
+
+[formatted_pyref_vim]: http://github.com/xolox/vim-pyref/blob/master/pyref.vim
+[formatted_create_index_py]: http://github.com/xolox/vim-pyref/blob/master/create-index.py
+[formatted_vimpythonindex]: http://github.com/xolox/vim-pyref/blob/master/vimpythonindex
 
  USAGE
 =======
 
-Save `pyref.vim` as `~/.vim/plugin/pyref.vim`, save `vimpythonindex` as
-`~/.vimpythonindex` and restart Vim. Now try it out: Open some Python source
-code in Vim and press the <F1> key. If it doesn't work our of the box you
-probably need to change the global variable `pyref_browser` to the filename or
-pathname of a working web browser executable, e.g. inside Vim type:
+Right-click and save [pyref.vim][raw_pyref_vim] as `~/.vim/plugin/pyref.vim`, likewise save
+[vimpythonindex][raw_vimpythonindex] as `~/.vimpythonindex` and restart Vim. Now try it out: Open
+some Python source code in Vim and press the `<F1>` key. If it doesn't work out
+of the box you probably need to change the global variable `pyref_browser` to the
+filename or pathname of a working web browser executable, e.g. inside Vim type:
 
     :let pyref_browser = '/usr/bin/konqueror'
+
+[raw_pyref_vim]: http://github.com/xolox/vim-pyref/raw/master/pyref.vim
+[raw_vimpythonindex]: http://github.com/xolox/vim-pyref/raw/master/vimpythonindex
 
  CONTACT
 =========
