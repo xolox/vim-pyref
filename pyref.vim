@@ -1,6 +1,6 @@
 " Vim plug-in
 " Maintainer: Peter Odding <peter@peterodding.com>
-" Last Change: May 23, 2010
+" Last Change: May 24, 2010
 " URL: http://peterodding.com/code/vim/pyref
 " License: MIT
 
@@ -24,7 +24,8 @@
 "                   of your web browser (the plug-in tries to find a sensible
 "                   default but that might not always work).
 "  "pyref_index":   Set this global variable to change the location of the
-"                   index file from its default which is "~/.vimpythonindex".
+"                   index file from its default (on Windows the default is
+"                   "~/_vimpythonindex", on UNIX it is "~/.vimpythonindex").
 "  "pyref_mirror":  Sometimes I don't have an internet connection available,
 "                   therefor I've installed the Ubuntu package `python2.6-doc'
 "                   which puts the Python language and library reference in
@@ -45,7 +46,11 @@
 " Define the configuration defaults.
 
 if !exists('pyref_index')
-  let pyref_index = '~/.vimpythonindex'
+  if has('win32') || has('win64')
+    let pyref_index = '~/_vimpythonindex'
+  else
+    let pyref_index = '~/.vimpythonindex'
+  endif
 endif
 
 if !exists('pyref_mirror')
@@ -63,17 +68,32 @@ if !exists('pyref_mapping')
 endif
 
 if !exists('pyref_browser')
-  " Search for a sensible default browser.
-  let s:search_path = substitute(substitute($PATH, ',', '\\,', 'g'), ':', ',', 'g')
-  " Note: Don't use `xdg-open' here, it ignores fragment identifiers :-S
-  for s:browser in ['gnome-open', 'firefox', 'google-chrome']
-    let s:matches = split(globpath(s:search_path, s:browser, 1), '\n')
-    if len(s:matches) > 0
-      let pyref_browser = s:matches[0]
-      break
+  if has('win32') || has('win64')
+    " On Windows the default web browser is accessible using the START command.
+    let pyref_browser = 'CMD /C START ""'
+  else
+    " Otherwise we search for a sensible default browser.
+    let s:search_path = substitute(substitute($PATH, ',', '\\,', 'g'), ':', ',', 'g')
+    " Note: Don't use `xdg-open' here, it ignores fragment identifiers :-S
+    for s:browser in ['gnome-open', 'firefox', 'google-chrome']
+      " Use globpath()'s third argument where possible (since Vim 7.3?).
+      try
+        let s:matches = split(globpath(s:search_path, s:browser, 1), '\n')
+      catch
+        let s:matches = split(globpath(s:search_path, s:browser), '\n')
+      endtry
+      if len(s:matches) > 0
+        let pyref_browser = s:matches[0]
+        break
+      endif
+    endfor
+    unlet s:search_path s:browser s:matches
+    if !exists('pyref_browser')
+      let message = "pyref.vim: Failed to find a default web browser!"
+      echoerr message . "\nPlease set the global variable `pyref_browser' manually."
+      finish
     endif
-  endfor
-  unlet s:search_path s:browser s:matches
+  endif
 endif
 
 " Use an automatic command to map <F1> only inside Python buffers.
@@ -121,10 +141,13 @@ function! s:PyRef()
   let browser = shellescape(g:pyref_browser)
 
   " Search for an exact match of a module name or identifier in the index.
+  let indexfile = fnamemodify(g:pyref_index, ':p')
   try
-    let lines = readfile(fnamemodify(g:pyref_index, ':p'))
+    
+    let lines = readfile(indexfile)
   catch
     let lines = []
+    echoerr "pyref.vim: Failed to read index file! (" . indexfile . ")"
   endtry
   if s:JumpToEntry(lines, '^\(module-\)\?' . pattern . '\t')
     return
@@ -163,9 +186,15 @@ function! s:JumpToEntry(lines, pattern)
 endfunction
 
 function! s:OpenBrowser(url)
-  let browser = shellescape(g:pyref_browser)
+  let browser = g:pyref_browser
+  if browser !~ '^CMD /C START'
+    let browser = shellescape(browser)
+  endif
   call system(browser . ' ' . shellescape(a:url))
-  if v:shell_error
+  if v:shell_error && browser !~ '^CMD /C START'
+    " When I tested this on Windows Vista the START command worked just fine
+    " but it always exited with a status code of 1. Therefor the status code
+    " of the START command is now ignored.
     let message = "pyref.vim: Failed to execute %s! (status code %i)"
     echoerr printf(message, browser, v:shell_error)
     return 0

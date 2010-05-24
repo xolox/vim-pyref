@@ -16,11 +16,14 @@ can download the index that I've already created (see [vimpythonindex][formatted
  USAGE
 =======
 
-Right-click and save [pyref.vim][raw_pyref_vim] as `~/.vim/plugin/pyref.vim`, likewise save
-[vimpythonindex][raw_vimpythonindex] as `~/.vimpythonindex` and restart Vim. Now try it out: Open
-some Python source code in Vim and press the `<F1>` key. If it doesn't work out
-of the box you probably need to change the global variable `pyref_browser` to the
-filename or pathname of a working web browser executable, e.g. inside Vim type:
+Right-click and save [pyref.vim][raw_pyref_vim] as `~/.vim/plugin/pyref.vim`
+(if you're on Windows save the file as `%USERPROFILE%\vimfiles\plugin\pyref.vim`),
+likewise save [vimpythonindex][raw_vimpythonindex] as `~/.vimpythonindex` (if
+you're on Windows then save this file as `%USERPROFILE%\_vimpythonindex`) and
+restart Vim. Now try it out: Open some Python source code in Vim and press the
+`<F1>` key. If it doesn't work out of the box you probably need to change the
+global variable `pyref_browser` to the filename or pathname of a working web
+browser executable, e.g. inside Vim type:
 
     :let pyref_browser = '/usr/bin/konqueror'
 
