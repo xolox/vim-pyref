@@ -1,6 +1,6 @@
 " Vim plug-in
 " Maintainer: Peter Odding <peter@peterodding.com>
-" Last Change: May 24, 2010
+" Last Change: May 25, 2010
 " URL: http://peterodding.com/code/vim/pyref
 " License: MIT
 
@@ -187,10 +187,14 @@ endfunction
 
 function! s:OpenBrowser(url)
   let browser = g:pyref_browser
-  if browser !~ '^CMD /C START'
-    let browser = shellescape(browser)
+  if browser =~ '\<\(lynx\|links\)\>'
+    execute '!' . browser fnameescape(a:url)
+  else
+    if browser !~ '^CMD /C START'
+      let browser = shellescape(browser)
+    endif
+    call system(browser . ' ' . shellescape(a:url))
   endif
-  call system(browser . ' ' . shellescape(a:url))
   if v:shell_error && browser !~ '^CMD /C START'
     " When I tested this on Windows Vista the START command worked just fine
     " but it always exited with a status code of 1. Therefor the status code
