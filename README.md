@@ -36,6 +36,9 @@ browser executable, e.g. inside Vim type:
 If you have questions, bug reports, suggestions, etc. the author can be
 contacted at <peter@peterodding.com>. The latest version is available
 at <http://peterodding.com/code/vim/pyref> and <http://github.com/xolox/vim-pyref>.
+If you like the script you can vote for it on [vim.org][vim_scripts_entry].
+
+[vim_scripts_entry]: http://www.vim.org/scripts/script.php?script_id=3104
 
  LICENSE
 =========
