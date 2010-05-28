@@ -72,10 +72,17 @@ if !exists('pyref_browser')
     " On Windows the default web browser is accessible using the START command.
     let pyref_browser = 'CMD /C START ""'
   else
+    " On UNIX we decide whether to use a CLI or GUI web browser based on
+    " whether the $DISPLAY environment variable is set.
+    if $DISPLAY == ''
+      let s:known_browsers = ['lynx', 'links', 'w3m']
+    else
+      " Note: Don't use `xdg-open' here, it ignores fragment identifiers :-S
+      let s:known_browsers = ['gnome-open', 'firefox', 'google-chrome', 'konqueror']
+    endif
     " Otherwise we search for a sensible default browser.
     let s:search_path = substitute(substitute($PATH, ',', '\\,', 'g'), ':', ',', 'g')
-    " Note: Don't use `xdg-open' here, it ignores fragment identifiers :-S
-    for s:browser in ['gnome-open', 'firefox', 'google-chrome']
+    for s:browser in s:known_browsers
       " Use globpath()'s third argument where possible (since Vim 7.3?).
       try
         let s:matches = split(globpath(s:search_path, s:browser, 1), '\n')
@@ -87,7 +94,7 @@ if !exists('pyref_browser')
         break
       endif
     endfor
-    unlet s:search_path s:browser s:matches
+    unlet s:search_path s:known_browsers s:browser s:matches
     if !exists('pyref_browser')
       let message = "pyref.vim: Failed to find a default web browser!"
       echoerr message . "\nPlease set the global variable `pyref_browser' manually."
@@ -188,7 +195,7 @@ endfunction
 
 function! s:OpenBrowser(url)
   let browser = g:pyref_browser
-  if browser =~ '\<\(lynx\|links\)\>'
+  if browser =~ '\<\(lynx\|links\|w3m\)\>'
     execute '!' . browser fnameescape(a:url)
   else
     if browser !~ '^CMD /C START'

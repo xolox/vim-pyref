@@ -1,13 +1,15 @@
-The file [pyref.vim][formatted_pyref_vim] is a plug-in for the Vim text editor that maps the `<F1>`
-key in Python buffers to search through the Python language and library
-reference documentation for the keyword or identifier at the current cursor
-position and open the first match in your web browser. This works in both
-graphical Vim and console Vim.
+The file [pyref.vim][formatted_pyref_vim] is a plug-in for the Vim text editor
+that maps the `<F1>` key in Python buffers to search through the Python
+language and library reference documentation for the keyword or identifier at
+the current cursor position and open the first match in your web browser. When
+no GUI is available a command-line web browser like `lynx` or `w3m` will be
+used, otherwise the plug-in prefers a graphical web browser like Mozilla
+Firefox or Google Chrome.
 
 The search works by scanning through a special index file with keyword, URL
 pairs separated by tabs and delimited by newlines. You can create this index
-yourself using a Python script I've written (see [create-index.py][formatted_create_index_py]) or you
-can download the index that I've already created (see [vimpythonindex][formatted_vimpythonindex]).
+yourself using a Python script I've written (see [create-index.py][formatted_create_index_py])
+or you can download the index that I've already created (see [vimpythonindex][formatted_vimpythonindex]).
 
 [formatted_pyref_vim]: http://github.com/xolox/vim-pyref/blob/master/pyref.vim
 [formatted_create_index_py]: http://github.com/xolox/vim-pyref/blob/master/create-index.py
