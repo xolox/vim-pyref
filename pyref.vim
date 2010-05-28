@@ -142,13 +142,9 @@ function! s:PyRef()
   " Escape any dots in the expression so it can be used as a pattern.
   let pattern = substitute(ident, '\.', '\\.', 'g')
 
-  " Escape the browser path so it can be used as shell command.
-  let browser = shellescape(g:pyref_browser)
-
   " Search for an exact match of a module name or identifier in the index.
   let indexfile = fnamemodify(g:pyref_index, ':p')
   try
-    
     let lines = readfile(indexfile)
   catch
     let lines = []
