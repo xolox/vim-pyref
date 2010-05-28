@@ -1,6 +1,6 @@
 " Vim plug-in
 " Maintainer: Peter Odding <peter@peterodding.com>
-" Last Change: May 25, 2010
+" Last Change: May 28, 2010
 " URL: http://peterodding.com/code/vim/pyref
 " License: MIT
 
@@ -104,8 +104,13 @@ augroup END
 
 function! s:DefineMappings()
   let command = '%s <silent> <buffer> %s %s:call <Sid>PyRef()<CR>'
-  execute printf(command, 'inoremap', g:pyref_mapping, '<C-O>')
-  execute printf(command, 'nnoremap', g:pyref_mapping, '')
+  " Always define the normal mode mapping.
+  execute printf(command, 'nmap', g:pyref_mapping, '')
+  " Don't create the insert mode mapping when "g:pyref_mapping" has been
+  " changed to something like K because it'll conflict with regular input.
+  if g:pyref_mapping =~ '^<[^>]\+>'
+    execute printf(command, 'imap', g:pyref_mapping, '<C-O>')
+  endif
 endfunction
 
 " This list of lists contains [url_format, method_pattern] pairs that are used
