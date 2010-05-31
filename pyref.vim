@@ -1,6 +1,6 @@
 " Vim plug-in
 " Maintainer: Peter Odding <peter@peterodding.com>
-" Last Change: May 28, 2010
+" Last Change: June 1, 2010
 " URL: http://peterodding.com/code/vim/pyref
 " License: MIT
 
@@ -177,6 +177,19 @@ function! s:PyRef()
   if s:JumpToEntry(lines, pattern)
     return
   endif
+
+  " Split the expression on all dots and search for a progressively smaller
+  " suffix to resolve object attributes like "self.parser.add_option" to
+  " global identifiers like "optparse.OptionParser.add_option". This relies
+  " on the uniqueness of the method names in the standard library.
+  let parts = split(ident, '\.')
+  while len(parts) > 1
+    call remove(parts, 0)
+    let pattern = join(parts, '\.') . '$'
+    if s:JumpToEntry(lines, pattern)
+      return
+    endif
+  endwhile
 
   " As a last resort, search all of http://docs.python.org/ using Google.
   call s:OpenBrowser('http://google.com/search?btnI&q=inurl:docs.python.org/+' . ident)
