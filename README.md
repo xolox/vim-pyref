@@ -13,18 +13,15 @@ Google Chrome.
 
 The search works by scanning through a special index file with keyword, URL
 pairs separated by tabs and delimited by newlines. You can create this index
-yourself using a Python script I've written (see the file [create-index.py]
-[view_spider]) or you can download the index that I've already created (see
-the file [vimpythonindex] [view_index]).
+yourself using a Python script I've written (see the file [spider.py]
+[view_spider]) or you can download the index that I've already created (see the
+file [index] [view_index]).
 
 ## Usage and options
 
-Right-click and save the file [pyref.vim][download_plugin] as
-`~/.vim/plugin/pyref.vim` (if you're on Windows save the file as
-`%USERPROFILE%\vimfiles\plugin\pyref.vim` instead), likewise save the file
-[vimpythonindex][download_index] as `~/.vimpythonindex` (if you're on Windows
-then save this file as `%USERPROFILE%\_vimpythonindex` instead) and restart
-Vim. Now try it out: Open some Python source code in Vim and press the `<F1>`
+Unzip the most recent [ZIP archive] [latest_zip] file inside your Vim profile
+directory (usually this is `~/.vim` on UNIX and `%USERPROFILE%\vimfiles` on
+Windows), restart Vim and try it out: Open a Python script and press the `<F1>`
 key. If it doesn't work at first, please see the `pyref_browser` and
 `pyref_mapping` options below.
 
@@ -71,9 +68,11 @@ the global variable `pyref_mirror` accordingly.
 ### The `pyref_index` option
 
 If you don't like the default location of the index file you can change it by
-setting the global variable `pyref_index`. Note that a leading `~` in the path
-is expanded to your current home directory (`$HOME` on UNIX, `%USERPROFILE%` on
-Windows).
+setting the global variable `pyref_index`. A leading `~` in the `pyref_index`
+variable is expanded to your current home directory (`$HOME` on UNIX,
+`%USERPROFILE%` on Windows). Be aware that when you change the `pyref_index`
+option automatic updates using the [getscript plug-in] [getscript_usage] won't
+update the index file anymore!
 
 ### General note about options
 
@@ -88,7 +87,7 @@ have to query the file-system when it's loaded.
 If you have questions, bug reports, suggestions, etc. the author can be
 contacted at <peter@peterodding.com>. The latest version is available
 at <http://peterodding.com/code/vim/pyref> and <http://github.com/xolox/vim-pyref>.
-If you like the script please vote for it on [vim.org][vim_scripts_entry].
+If you like the script please vote for it on [www.vim.org][vim_scripts_entry].
 
 ## License
 
@@ -98,6 +97,8 @@ Vim-PyRef is licensed under the [MIT license] [mit_license].<br>
 
 [download_index]: http://github.com/xolox/vim-pyref/raw/master/vimpythonindex
 [download_plugin]: http://github.com/xolox/vim-pyref/raw/master/pyref.vim
+[getscript_usage]: http://vimdoc.sourceforge.net/htmldoc/pi_getscript.html#glvs-usage
+[latest_zip]: http://github.com/downloads/xolox/vim-pyref/pyref-latest.zip
 [mit_license]: http://en.wikipedia.org/wiki/MIT_License
 [pylangref]: http://docs.python.org/reference/index.html
 [pylibref]: http://docs.python.org/library/index.html
