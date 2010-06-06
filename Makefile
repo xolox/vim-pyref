@@ -26,7 +26,7 @@ $(VIMDOC): Makefile README.md
 $(HTMLDOC): Makefile README.md
 	@echo "Creating \`$(HTMLDOC)' .."
 	@cat doc/README.header > $(HTMLDOC)
-	@markdown README.md >> $(HTMLDOC)
+	@cat README.md | markdown | SmartyPants >> $(HTMLDOC)
 	@cat doc/README.footer >> $(HTMLDOC)
 
 # This is only useful for myself, it uploads the latest README to my website.

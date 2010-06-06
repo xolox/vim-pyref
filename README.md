@@ -91,7 +91,7 @@ If you like the script please vote for it on [www.vim.org] [vim_scripts_entry].
 
 ## License
 
-Vim-PyRef is licensed under the [MIT license] [mit_license].<br>
+This software is licensed under the [MIT license] [mit_license].  
 © 2010 Peter Odding &lt;<peter@peterodding.com>&gt;.
 
 
