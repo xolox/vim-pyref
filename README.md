@@ -101,8 +101,8 @@ This software is licensed under the [MIT license] [mit_license].
 [pylangref]: http://docs.python.org/reference/index.html
 [pylibref]: http://docs.python.org/library/index.html
 [python_homepage]: http://python.org/
-[view_index]: http://github.com/xolox/vim-pyref/blob/master/vimpythonindex
+[view_index]: http://github.com/xolox/vim-pyref/blob/master/index
 [view_plugin]: http://github.com/xolox/vim-pyref/blob/master/pyref.vim
-[view_spider]: http://github.com/xolox/vim-pyref/blob/master/create-index.py
+[view_spider]: http://github.com/xolox/vim-pyref/blob/master/spider.py
 [vim_homepage]: http://www.vim.org/
 [vim_scripts_entry]: http://www.vim.org/scripts/script.php?script_id=3104
