@@ -87,7 +87,7 @@ have to query the file-system when it's loaded.
 If you have questions, bug reports, suggestions, etc. the author can be
 contacted at <peter@peterodding.com>. The latest version is available
 at <http://peterodding.com/code/vim/pyref> and <http://github.com/xolox/vim-pyref>.
-If you like the script please vote for it on [www.vim.org][vim_scripts_entry].
+If you like the script please vote for it on [www.vim.org] [vim_scripts_entry].
 
 ## License
 
@@ -95,8 +95,6 @@ Vim-PyRef is licensed under the [MIT license] [mit_license].<br>
 © 2010 Peter Odding &lt;<peter@peterodding.com>&gt;.
 
 
-[download_index]: http://github.com/xolox/vim-pyref/raw/master/vimpythonindex
-[download_plugin]: http://github.com/xolox/vim-pyref/raw/master/pyref.vim
 [getscript_usage]: http://vimdoc.sourceforge.net/htmldoc/pi_getscript.html#glvs-usage
 [latest_zip]: http://github.com/downloads/xolox/vim-pyref/pyref-latest.zip
 [mit_license]: http://en.wikipedia.org/wiki/MIT_License
