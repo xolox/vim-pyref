@@ -1,9 +1,9 @@
 " Vim plug-in
 " Maintainer: Peter Odding <peter@peterodding.com>
-" Last Change: June 3, 2010
+" Last Change: June 8, 2010
 " URL: http://peterodding.com/code/vim/pyref
 " License: MIT
-" Version: 0.4
+" Version: 0.5
 
 " Support for automatic update using the GLVS plug-in.
 " GetLatestVimScripts: 3104 1 :AutoInstall: pyref.zip
@@ -132,7 +132,12 @@ function! s:PyRef() " {{{1
     let lines = []
     echoerr "pyref.vim: Failed to read index file! (" . indexfile . ")"
   endtry
-  if s:JumpToEntry(lines, '^\(module-\|exceptions\.\)\?' . pattern . '\t')
+  if s:JumpToEntry(lines, '^\C\(module-\|exceptions\.\)\?' . pattern . '\t')
+    return
+  endif
+
+  " Search for a substring match on word boundaries.
+  if s:JumpToEntry(lines, '\C\<' . pattern . '\>.*\t')
     return
   endif
 
@@ -149,7 +154,7 @@ function! s:PyRef() " {{{1
   endfor
 
   " Search for a substring match in the index.
-  if s:JumpToEntry(lines, pattern)
+  if s:JumpToEntry(lines, '\C' . pattern . '.*\t')
     return
   endif
 
@@ -160,7 +165,7 @@ function! s:PyRef() " {{{1
   let parts = split(ident, '\.')
   while len(parts) > 1
     call remove(parts, 0)
-    let pattern = join(parts, '\.') . '$'
+    let pattern = '\C\<' . join(parts, '\.') . '$'
     if s:JumpToEntry(lines, pattern)
       return
     endif
@@ -175,12 +180,15 @@ endfunction
 " to recognize calls to methods of objects that are one of Python's standard
 " types: strings, lists, dictionaries and file handles.
 let s:object_methods = [
-      \ ['library/stdtypes.html#str.%s', '\.\@<=\(capitalize\|center\|count\|decode\|encode\|endswith\|expandtabs\|find\|format\|index\|isalnum\|isalpha\|isdigit\|islower\|isspace\|istitle\|isupper\|join\|ljust\|lower\|lstrip\|partition\|replace\|rfind\|rindex\|rjust\|rpartition\|rsplit\|rstrip\|split\|splitlines\|startswith\|strip\|swapcase\|title\|translate\|upper\|zfill\)$'],
-      \ ['tutorial/datastructures.html#more-on-lists', '\.\@<=\(append\|count\|extend\|index\|insert\|pop\|remove\|reverse\|sort\)$'],
-      \ ['library/stdtypes.html#dict.%s', '\.\@<=\(clear\|copy\|fromkeys\|get\|has_key\|items\|iteritems\|iterkeys\|itervalues\|keys\|pop\|popitem\|setdefault\|update\|values\)$'],
-      \ ['library/stdtypes.html#file.%s', '\.\@<=\(close\|closed\|encoding\|errors\|fileno\|flush\|isatty\|mode\|name\|newlines\|next\|read\|readinto\|readline\|readlines\|seek\|softspace\|tell\|truncate\|write\|writelines\|xreadlines\)$']]
+      \ ['library/stdtypes.html#str.%s', '\C\.\@<=\(capitalize\|center\|count\|decode\|encode\|endswith\|expandtabs\|find\|format\|index\|isalnum\|isalpha\|isdigit\|islower\|isspace\|istitle\|isupper\|join\|ljust\|lower\|lstrip\|partition\|replace\|rfind\|rindex\|rjust\|rpartition\|rsplit\|rstrip\|split\|splitlines\|startswith\|strip\|swapcase\|title\|translate\|upper\|zfill\)$'],
+      \ ['tutorial/datastructures.html#more-on-lists', '\C\.\@<=\(append\|count\|extend\|index\|insert\|pop\|remove\|reverse\|sort\)$'],
+      \ ['library/stdtypes.html#dict.%s', '\C\.\@<=\(clear\|copy\|fromkeys\|get\|has_key\|items\|iteritems\|iterkeys\|itervalues\|keys\|pop\|popitem\|setdefault\|update\|values\)$'],
+      \ ['library/stdtypes.html#file.%s', '\C\.\@<=\(close\|closed\|encoding\|errors\|fileno\|flush\|isatty\|mode\|name\|newlines\|next\|read\|readinto\|readline\|readlines\|seek\|softspace\|tell\|truncate\|write\|writelines\|xreadlines\)$']]
 
 function! s:JumpToEntry(lines, pattern) " {{{1
+  if &verbose
+    echomsg "pyref.vim: Trying to match" string(a:pattern)
+  endif
   let index = match(a:lines, a:pattern)
   if index >= 0
     let url = split(a:lines[index], '\t')[1]
