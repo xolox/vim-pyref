@@ -96,7 +96,7 @@ This software is licensed under the [MIT license] [mit_license].
 
 
 [getscript_usage]: http://vimdoc.sourceforge.net/htmldoc/pi_getscript.html#glvs-usage
-[latest_zip]: http://github.com/downloads/xolox/vim-pyref/pyref-0.5.zip
+[latest_zip]: http://peterodding.com/code/vim/download.php?script=pyref
 [mit_license]: http://en.wikipedia.org/wiki/MIT_License
 [pylangref]: http://docs.python.org/reference/index.html
 [pylibref]: http://docs.python.org/library/index.html
