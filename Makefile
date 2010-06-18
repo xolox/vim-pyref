@@ -1,37 +1,21 @@
-VIMDOC=doc/pyref.txt
-HTMLDOC=doc/readme.html
-ZIPDIR := $(shell mktemp -d)
+PROJECT=pyref
+VIMDOC := $(shell mktemp -u)
 ZIPFILE := $(shell mktemp -u)
+ZIPDIR := $(shell mktemp -d)
+RELEASE=$(PROJECT)-$(VERSION).zip
 
 # NOTE: Make does NOT expand the following back ticks!
-VERSION=`grep '^" Version:' pyref.vim | awk '{print $$3}'`
+VERSION=`grep '^" Version:' $(PROJECT).vim | awk '{print $$3}'`
 
 # The main rule builds a ZIP that can be published to http://www.vim.org.
-archive: Makefile pyref.vim index spider.py $(VIMDOC) $(HTMLDOC)
-	@echo "Creating \`pyref-$(VERSION).zip' .."
-	@mkdir -p $(ZIPDIR)/plugin $(ZIPDIR)/doc $(ZIPDIR)/pyref 
-	@cp pyref.vim $(ZIPDIR)/plugin
-	@cp $(VIMDOC) $(ZIPDIR)/doc
-	@cp index $(HTMLDOC) spider.py $(ZIPDIR)/pyref
+archive: Makefile $(PROJECT).vim index spider.py README.md
+	@echo "Creating \`$(PROJECT).txt' .."
+	@mkd2vimdoc.py $(PROJECT).txt < README.md > $(VIMDOC)
+	@echo "Creating \`$(RELEASE)' .."
+	@mkdir -p $(ZIPDIR)/plugin $(ZIPDIR)/doc $(ZIPDIR)/$(PROJECT)
+	@cp $(PROJECT).vim $(ZIPDIR)/plugin
+	@cp $(VIMDOC) $(ZIPDIR)/doc/$(PROJECT).txt
+	@cp index spider.py $(ZIPDIR)/$(PROJECT)
 	@cd $(ZIPDIR) && zip -r $(ZIPFILE) . >/dev/null
 	@rm -R $(ZIPDIR)
-	@mv $(ZIPFILE) pyref-$(VERSION).zip
-
-# This rule converts the Markdown README to Vim documentation.
-$(VIMDOC): Makefile README.md
-	@echo "Creating \`$(VIMDOC)' .."
-	@mkd2vimdoc.py `basename $(VIMDOC)` < README.md > $(VIMDOC)
-
-# This rule converts the Markdown README to HTML, which reads easier.
-$(HTMLDOC): Makefile README.md
-	@echo "Creating \`$(HTMLDOC)' .."
-	@cat doc/README.header > $(HTMLDOC)
-	@cat README.md | markdown | SmartyPants >> $(HTMLDOC)
-	@cat doc/README.footer >> $(HTMLDOC)
-
-# This is only useful for myself, it uploads the latest README to my website.
-web: $(HTMLDOC)
-	@echo "Uploading homepage .."
-	@scp -q $(HTMLDOC) vps:/home/peterodding.com/public/files/code/vim/pyref/index.html
-
-all: archive web
+	@mv $(ZIPFILE) $(RELEASE)
