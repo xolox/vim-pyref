@@ -11,10 +11,9 @@ plug-in prefers a graphical web browser like Mozilla Firefox or Google Chrome.
 ## How does it work?
 
 The search works by scanning through a special index file with keyword, URL
-pairs separated by tabs and delimited by newlines. You can create this index
-yourself using a Python script I've written (see the file [spider.py]
-[view_spider]) or you can download the index that I've already created (see the
-file [index] [view_index]).
+pairs separated by tabs and delimited by newlines. The index file is included
+in the ZIP archive linked to below but you can also create it yourself using
+the Python script [spider.py] [view_spider].
 
 ## Install & usage
 
@@ -101,7 +100,6 @@ This software is licensed under the [MIT license] [mit_license].
 [pylangref]: http://docs.python.org/reference/index.html
 [pylibref]: http://docs.python.org/library/index.html
 [python_homepage]: http://python.org/
-[view_index]: http://github.com/xolox/vim-pyref/blob/master/index
 [view_spider]: http://github.com/xolox/vim-pyref/blob/master/spider.py
 [vim_homepage]: http://www.vim.org/
 [vim_scripts_entry]: http://www.vim.org/scripts/script.php?script_id=3104
