@@ -1,7 +1,7 @@
 " Vim plug-in
-" Maintainer: Peter Odding <peter@peterodding.com>
-" Last Change: June 8, 2010
-" URL: http://peterodding.com/code/vim/pyref
+" Author: Peter Odding <peter@peterodding.com>
+" Last Change: July 28, 2010
+" URL: http://peterodding.com/code/vim/pyref/
 " License: MIT
 " Version: 0.5
 
@@ -9,7 +9,7 @@
 " GetLatestVimScripts: 3104 1 :AutoInstall: pyref.zip
 
 " Don't source the plug-in when its already been loaded or &compatible is set.
-if &cp || exists('loaded_pyref')
+if &cp || exists('g:loaded_pyref')
   finish
 endif
 
@@ -32,9 +32,9 @@ function! s:CheckOptions()
   endif
   if !exists('g:pyref_index')
     if has('win32') || has('win64')
-      let g:pyref_index = '~/vimfiles/pyref/index'
+      let g:pyref_index = '~/vimfiles/misc/pyref_index'
     else
-      let g:pyref_index = '~/.vim/pyref/index'
+      let g:pyref_index = '~/.vim/misc/pyref_index'
     endif
   endif
   if !filereadable(fnamemodify(g:pyref_index, ':p'))
@@ -81,7 +81,7 @@ endfunction
 
 if s:CheckOptions()
   " Don't reload the plug-in once its been successfully initialized.
-  let loaded_pyref = 1
+  let g:loaded_pyref = 1
 else
   " Don't finish sourcing the script when there's no point.
   finish
