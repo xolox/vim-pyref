@@ -1,13 +1,12 @@
 # Context-sensitive documentation <br> for Python source code in Vim
 
-The file [pyref.vim] [view_plugin] is a plug-in for the [Vim text editor]
-[vim_homepage] that maps the `<F1>` key in [Python] [python_homepage] buffers
-to search through the [Python language reference] [pylangref] and [library
-reference] [pylibref] documentation for the keyword or identifier at the
-current cursor position and open the first match in your web browser. When no
-GUI is available a command-line web browser like `lynx` or `w3m` will be used,
-otherwise the plug-in prefers a graphical web browser like Mozilla Firefox or
-Google Chrome.
+The `pyref.vim` script is a plug-in for the [Vim text editor] [vim_homepage]
+that maps the `<F1>` key in [Python] [python_homepage] buffers to search
+through the [Python language reference] [pylangref] and [library reference]
+[pylibref] documentation for the keyword or identifier at the current cursor
+position and open the first match in your web browser. When no GUI is available
+a command-line web browser like `lynx` or `w3m` will be used, otherwise the
+plug-in prefers a graphical web browser like Mozilla Firefox or Google Chrome.
 
 ## How does it work?
 
@@ -17,13 +16,14 @@ yourself using a Python script I've written (see the file [spider.py]
 [view_spider]) or you can download the index that I've already created (see the
 file [index] [view_index]).
 
-## Usage and options
+## Install & usage
 
 Unzip the most recent [ZIP archive] [latest_zip] file inside your Vim profile
 directory (usually this is `~/.vim` on UNIX and `%USERPROFILE%\vimfiles` on
-Windows), restart Vim and try it out: Open a Python script and press the `<F1>`
-key. If it doesn't work at first, please see the `g:pyref_browser` and
-`g:pyref_mapping` options below.
+Windows), restart Vim and execute the command `:helptags ~/.vim/doc` (use
+`:helptags ~\vimfiles\doc` instead on Windows). Now try it out: Open a Python
+script and press the `<F1>` key. If it doesn't work at first, please see the
+`g:pyref_browser` and `g:pyref_mapping` options below.
 
 The following paragraphs explain the available options:
 
@@ -61,9 +61,9 @@ and Debian you can execute the following command to install the documentation:
     $ sudo apt-get install python2.6-doc
 
 The above package puts the documentation in `/usr/share/doc/python2.6/html/`
-which happens to be the default location checked by the [pyref.vim]
-[view_plugin] script. If you've installed the documentation elsewhere, change
-the global variable `g:pyref_mirror` accordingly.
+which happens to be the default location checked by the `pyref.vim` script. If
+you've installed the documentation elsewhere, change the global variable
+`g:pyref_mirror` accordingly.
 
 ### The `g:pyref_index` option
 
@@ -102,7 +102,6 @@ This software is licensed under the [MIT license] [mit_license].
 [pylibref]: http://docs.python.org/library/index.html
 [python_homepage]: http://python.org/
 [view_index]: http://github.com/xolox/vim-pyref/blob/master/index
-[view_plugin]: http://github.com/xolox/vim-pyref/blob/master/pyref.vim
 [view_spider]: http://github.com/xolox/vim-pyref/blob/master/spider.py
 [vim_homepage]: http://www.vim.org/
 [vim_scripts_entry]: http://www.vim.org/scripts/script.php?script_id=3104
