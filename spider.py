@@ -16,7 +16,7 @@
 
 local_dir = '/usr/share/doc/python2.6/html/'
 docs_mirror = 'http://docs.python.org/'
-index_file = '~/.vimpythonindex'
+index_file = '~/.vim/misc/pyref_index'
 
 # You shouldn't need to change anything below here.
 
@@ -32,7 +32,7 @@ def getpage(url):
     contents = handle.read().decode('utf-8')
     handle.close()
     if not url.startswith('file://'):
-      # Rate-limit the number of connections to http://python.org/
+      # Rate-limit the number of connections to http://docs.python.org/
       time.sleep(1)
     return contents
   except:
