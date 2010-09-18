@@ -3,7 +3,7 @@
 " Last Change: September 18, 2010
 " URL: http://peterodding.com/code/vim/pyref/
 " License: MIT
-" Version: 0.5
+" Version: 0.6
 
 " Support for automatic update using the GLVS plug-in.
 " GetLatestVimScripts: 3104 1 :AutoInstall: pyref.zip
