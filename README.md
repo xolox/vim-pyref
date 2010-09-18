@@ -1,14 +1,14 @@
 # Context-sensitive documentation <br> for Python source code in Vim
 
-The `pyref.vim` script is a plug-in for the [Vim text editor](http://www.vim.org/) that maps the `<F1>` key in [Python](http://python.org/) buffers to search through the [Python language reference](http://docs.python.org/reference/index.html) and [library reference](http://docs.python.org/library/index.html) documentation for the keyword or identifier at the current cursor position and open the first match in your web browser. When no GUI is available a command-line web browser like `lynx` or `w3m` will be used, otherwise the plug-in prefers a graphical web browser like Mozilla Firefox or Google Chrome.
+The `pyref.vim` script is a plug-in for the [Vim text editor](http://www.vim.org/) that looks up keywords and identifiers in the [Python language reference](http://docs.python.org/reference/index.html) and [library reference](http://docs.python.org/library/index.html) documentation using your web browser. The `:PyRef` command looks up the identifier given as an argument while the `<F1>` mapping looks up the item at the text cursor. Both are only made available inside Python buffers.
 
 ## How does it work?
 
-The search works by scanning through a special index file with keyword, URL pairs separated by tabs and delimited by newlines. The index file is included in the ZIP archive linked to below but you can also create it yourself using the Python script [spider.py](http://github.com/xolox/vim-pyref/blob/master/spider.py).
+The search works by scanning through a special index file with keyword, URL pairs separated by tabs and delimited by newlines. The index file is included in the ZIP archive linked below but you can also create it yourself using the Python script [spider.py](http://github.com/xolox/vim-pyref/blob/master/spider.py).
 
 ## Install & usage
 
-Unzip the most recent [ZIP archive](http://peterodding.com/code/vim/downloads/pyref) file inside your Vim profile directory (usually this is `~/.vim` on UNIX and `%USERPROFILE%\vimfiles` on Windows), restart Vim and execute the command `:helptags ~/.vim/doc` (use `:helptags ~\vimfiles\doc` instead on Windows). Now try it out: Open a Python script and press the `<F1>` key.
+Unzip the most recent [ZIP archive](http://peterodding.com/code/vim/downloads/pyref) file inside your Vim profile directory (usually this is `~/.vim` on UNIX and `%USERPROFILE%\vimfiles` on Windows), restart Vim and execute the command `:helptags ~/.vim/doc` (use `:helptags ~\vimfiles\doc` instead on Windows). Now try it out: Open a Python script and press the `<F1>` key on something interesting.
 
 The following paragraphs explain the available options:
 
