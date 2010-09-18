@@ -1,6 +1,6 @@
 " Vim plug-in
 " Author: Peter Odding <peter@peterodding.com>
-" Last Change: July 28, 2010
+" Last Change: September 18, 2010
 " URL: http://peterodding.com/code/vim/pyref/
 " License: MIT
 " Version: 0.5
@@ -41,40 +41,6 @@ function! s:CheckOptions()
     let msg = "pyref.vim: The index file doesn't exist or isn't readable! (%s)"
     echoerr printf(msg, g:pyref_index)
     return 0 " Initialization failed.
-  endif
-  if !exists('g:pyref_browser')
-    if has('win32') || has('win64')
-      " On Windows the default web browser is accessible using the START command.
-      let g:pyref_browser = 'CMD /C START ""'
-    else
-      " On UNIX we decide whether to use a CLI or GUI web browser based on
-      " whether the $DISPLAY environment variable is set.
-      if $DISPLAY == ''
-        let known_browsers = ['lynx', 'links', 'w3m']
-      else
-        " Note: Don't use `xdg-open' here, it ignores fragment identifiers :-S
-        let known_browsers = ['gnome-open', 'firefox', 'google-chrome', 'konqueror']
-      endif
-      " Otherwise we search for a sensible default browser.
-      let search_path = substitute(substitute($PATH, ',', '\\,', 'g'), ':', ',', 'g')
-      for browser in known_browsers
-        " Use globpath()'s third argument where possible (since Vim 7.3?).
-        try
-          let matches = split(globpath(search_path, browser, 1), '\n')
-        catch
-          let matches = split(globpath(search_path, browser), '\n')
-        endtry
-        if len(matches) > 0
-          let g:pyref_browser = matches[0]
-          break
-        endif
-      endfor
-      if !exists('g:pyref_browser')
-        let msg = "pyref.vim: Failed to find a default web browser!"
-        echoerr msg . "\nPlease set the global variable `pyref_browser' manually."
-        return 0 " Initialization failed.
-      endif
-    endif
   endif
   return 1 " Initialization successful.
 endfunction
@@ -118,7 +84,8 @@ function! s:PyRef() " {{{1
 
   " Do something useful when there's nothing at the current position.
   if ident == ''
-    return s:OpenBrowser(g:pyref_mirror . '/contents.html')
+    call xolox#open#url(g:pyref_mirror . '/contents.html')
+    return
   endif
 
   " Escape any dots in the expression so it can be used as a pattern.
@@ -149,7 +116,8 @@ function! s:PyRef() " {{{1
       if url =~ '%s'
         let url = printf(url, method)
       endif
-      return s:OpenBrowser(g:pyref_mirror . '/' . url)
+      call xolox#open#url(g:pyref_mirror . '/' . url)
+      return
     endif
   endfor
 
@@ -172,7 +140,7 @@ function! s:PyRef() " {{{1
   endwhile
 
   " As a last resort, search all of http://docs.python.org/ using Google.
-  call s:OpenBrowser('http://google.com/search?btnI&q=inurl:docs.python.org/+' . ident)
+  call xolox#open#url('http://google.com/search?btnI&q=inurl:docs.python.org/+' . ident)
 
 endfunction
 
@@ -192,31 +160,10 @@ function! s:JumpToEntry(lines, pattern) " {{{1
   let index = match(a:lines, a:pattern)
   if index >= 0
     let url = split(a:lines[index], '\t')[1]
-    call s:OpenBrowser(g:pyref_mirror . '/' . url)
+    call xolox#open#url(g:pyref_mirror . '/' . url)
     return 1
   endif
   return 0
-endfunction
-
-function! s:OpenBrowser(url) " {{{1
-  let browser = g:pyref_browser
-  if browser =~ '\<\(lynx\|links\|w3m\)\>'
-    execute '!' . browser fnameescape(a:url)
-  else
-    if browser !~ '^CMD /C START'
-      let browser = shellescape(browser)
-    endif
-    call system(browser . ' ' . shellescape(a:url))
-  endif
-  if v:shell_error && browser !~ '^CMD /C START'
-    " When I tested this on Windows Vista the START command worked just fine
-    " but it always exited with a status code of 1. Therefor the status code
-    " of the START command is now ignored.
-    let message = "pyref.vim: Failed to execute %s! (status code %i)"
-    echoerr printf(message, browser, v:shell_error)
-    return 0
-  endif
-  return 1
 endfunction
 
 " vim: ts=2 sw=2 et nowrap
