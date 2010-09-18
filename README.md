@@ -1,10 +1,6 @@
 # Context-sensitive documentation <br> for Python source code in Vim
 
-The `pyref.vim` script is a plug-in for the [Vim text editor](http://www.vim.org/) that looks up keywords and identifiers in the [Python language reference](http://docs.python.org/reference/index.html) and [library reference](http://docs.python.org/library/index.html) documentation using your web browser. The `:PyRef` command looks up the identifier given as an argument while the `<F1>` mapping looks up the item at the text cursor. Both are only made available inside Python buffers.
-
-## How does it work?
-
-The search works by scanning through a special index file with keyword, URL pairs separated by tabs and delimited by newlines. The index file is included in the ZIP archive linked below but you can also create it yourself using the Python script [spider.py](http://github.com/xolox/vim-pyref/blob/master/spider.py).
+The `pyref.vim` script is a plug-in for the [Vim text editor](http://www.vim.org/) that looks up keywords and identifiers in the [Python language reference](http://docs.python.org/reference/index.html) and [library reference](http://docs.python.org/library/index.html) documentation using your web browser. The `:PyRef` command looks up the identifier given as an argument while the `<F1>` mapping looks up the item at the text cursor. Both are only made available inside Python buffers. The lookup works by scanning through a special index file which is included in the ZIP archive below, but you can also create/update the index yourself using the Python script [spider.py](http://github.com/xolox/vim-pyref/blob/master/spider.py).
 
 ## Install & usage
 
