@@ -1,12 +1,16 @@
 # Context-sensitive documentation <br> for Python source code in Vim
 
-The `pyref.vim` script is a plug-in for the [Vim text editor](http://www.vim.org/) that looks up keywords and identifiers in the [Python language reference](http://docs.python.org/reference/index.html) and [library reference](http://docs.python.org/library/index.html) documentation using your web browser. The `:PyRef` command looks up the identifier given as an argument while the `<F1>` mapping looks up the item at the text cursor. Both are only made available inside Python buffers. The lookup works by scanning through a special index file which is included in the ZIP archive below, but you can also create/update the index yourself using the Python script [spider.py](http://github.com/xolox/vim-pyref/blob/master/spider.py).
+The `pyref.vim` script is a plug-in for the [Vim text editor](http://www.vim.org/) that helps you look up the documentation for keywords and identifiers from the following sources using your web browser:
+
+ * [Python language reference](http://docs.python.org/reference/)
+ * [Python library reference](http://docs.python.org/library/)
+ * [Django documentation](http://docs.djangoproject.com/)
+
+The `:PyRef` command looks up the identifier given as an argument while the `<F1>` mapping (only available in Python buffers) looks up the item under the text cursor. The lookup works by scanning through a special index file which is included in the ZIP archive below, but you can also create/update the index yourself using the Python script [spider.py](http://github.com/xolox/vim-pyref/blob/master/spider.py).
 
 ## Install & usage
 
-Unzip the most recent [ZIP archive](http://peterodding.com/code/vim/downloads/pyref) file inside your Vim profile directory (usually this is `~/.vim` on UNIX and `%USERPROFILE%\vimfiles` on Windows), restart Vim and execute the command `:helptags ~/.vim/doc` (use `:helptags ~\vimfiles\doc` instead on Windows). Now try it out: Open a Python script and press the `<F1>` key on something interesting.
-
-The following paragraphs explain the available options:
+Unzip the most recent [ZIP archive](http://peterodding.com/code/vim/downloads/pyref) file inside your Vim profile directory (usually this is `~/.vim` on UNIX and `%USERPROFILE%\vimfiles` on Windows), restart Vim and execute the command `:helptags ~/.vim/doc` (use `:helptags ~\vimfiles\doc` instead on Windows). Now try it out: Open a Python script and press the `<F1>` key on something interesting. If it doesn't work or you want to change how it works, see the options documented below.
 
 ### The `g:pyref_mapping` option
 
@@ -16,13 +20,23 @@ If you press `<F1>` and nothing happens you're probably using a terminal that do
 
 Note that setting `g:pyref_mapping` won't change the key mapping in existing buffers.
 
-### The `g:pyref_mirror` option
+### The `g:pyref_python` option
 
-This option is useful when you don't always have a reliable internet connection available while coding. Most Linux distributions have an installable package containing the Python documentation, for example on Ubuntu and Debian you can execute the following command to install the documentation:
+This option is useful when you don't always have a reliable internet connection available while coding. Most Linux distributions have an installable package containing the Python documentation, for example on [Ubuntu](http://packages.ubuntu.com/python2.6-doc) and [Debian](http://packages.debian.org/python2.6-doc) you can execute the following command to install the documentation:
 
     $ sudo apt-get install python2.6-doc
 
-The above package puts the documentation in `/usr/share/doc/python2.6/html/` which happens to be the default location checked by the `pyref.vim` script. If you've installed the documentation elsewhere you can change the global variable `g:pyref_mirror` accordingly.
+The above package puts the documentation in `/usr/share/doc/python2.6/html/` which happens to be the default path checked by the `pyref.vim` script. If you've installed the documentation in a different location you can change the global variable `g:pyref_python`, e.g.:
+
+    :let g:pyref_python = $HOME . '/docs/python'
+
+### The `g:pyref_django` option
+
+This option works like `g:pyref_python` but allows you to configure the path to your local Django documentation. On [Ubuntu](http://packages.ubuntu.com/python-django-doc) and [Debian](http://packages.debian.org/python-django-doc) you can execute the following command to install the Django documentation:
+
+    $ sudo apt-get install python-django-doc
+
+In this case you shouldn't have to change anything because `pyref.vim` is already configured to be compatible with the `python-django-doc` package.
 
 ### The `g:pyref_index` option
 
@@ -34,7 +48,7 @@ You can change the above options permanently by putting the relevant `:let` stat
 
 ## Contact
 
-If you have questions, bug reports, suggestions, etc. the author can be contacted at <peter@peterodding.com>. The latest version is available at <http://peterodding.com/code/vim/pyref/> and <http://github.com/xolox/vim-pyref>. If you like the script please vote for it on [www.vim.org](http://www.vim.org/scripts/script.php?script_id=3104).
+If you have questions, bug reports, suggestions, etc. the author can be contacted at <peter@peterodding.com>. The latest version is available at <http://peterodding.com/code/vim/pyref/> and <http://github.com/xolox/vim-pyref>. If you like the script please vote for it on [Vim Online](http://www.vim.org/scripts/script.php?script_id=3104).
 
 ## License
 

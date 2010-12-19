@@ -1,3 +1,3 @@
 # To-do list
 
- * Convert `pyref.vim` to an autoload plug-in?
+ * Switch to `python-doc` package instead of `python2.6-doc`?

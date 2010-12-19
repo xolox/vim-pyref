@@ -3,87 +3,137 @@
 # Copyright 2010 Peter Odding <peter@peterodding.com>
 # This program is licensed under the MIT license.
 
-# This program indexes the keywords and identifiers in the Python language and
-# library reference HTML documentation and creates an index file with keywords
-# and their associated URL. Each line starts with a keyword or an identifier
-# followed by a tab and ends with the associated URL. The index file is used
-# by the pyref.vim plug-in for Vim to provide context sensitive documentation.
+# This Python script indexes a local/remote tree of Python HTML documentation
+# and creates/updates an index file that maps identifiers to their associated
+# URL in the documentation. Each line starts with a keyword or an identifier
+# followed by a tab and ends with the associated URL. The index file is used by
+# the pyref.vim plug-in for Vim to provide context sensitive documentation.
+# For more information visit http://peterodding.com/code/vim/pyref/
 
-# If you have the HTML documentation available on your hard drive (e.g. by
-# installing the Ubuntu package `python2.6-doc') then I recommend that you
-# index those files by setting the "local_dir" variable below, otherwise
-# http://docs.python.org/library/ will be indexed which can take a while.
+import os
+import re
+import sys
+import time
+import urllib
 
-local_dir = '/usr/share/doc/python2.6/html/'
-docs_mirror = 'http://docs.python.org/'
-index_file = '~/.vim/misc/pyref_index'
+DEBUG = False
 
-# You shouldn't need to change anything below here.
+indexfile = os.path.expanduser('~/.vim/misc/pyref_index')
+scriptname = os.path.split(sys.argv[0])[1]
 
-import os, re, time, urllib
+def message(text, *args):
+  text = '%s: ' + text + '\n'
+  text %= (scriptname,) + args
+  sys.stderr.write(text)
 
-# If local documentation is available then use that,
-# otherwise default to the latest online documentation.
-selected_docs = os.path.isdir(local_dir) and ('file://' + local_dir) or docs_mirror
+def verbose(text, *args):
+  if DEBUG:
+    message(text, *args)
 
-def getpage(url):
-  try:
-    handle = urllib.urlopen(url)
-    contents = handle.read().decode('utf-8')
-    handle.close()
-    if not url.startswith('file://'):
-      # Rate-limit the number of connections to http://docs.python.org/
-      time.sleep(1)
-    return contents
-  except:
-    print "\rFailed to get %s!" % url
-    return ''
+def error(text, *args):
+  message(text, *args)
+  sys.exit(1)
 
-pages = []
+# Make sure the Beautiful Soup HTML parser is available.
+try:
+  from BeautifulSoup import BeautifulSoup
+except ImportError:
+  error("""You'll need to install the Beautiful Soup HTML parser. If you're running
+Debian/Ubuntu try the following: sudo apt-get install python-beautifulsoup""")
 
-# Prepare to index the language and library references.
-for directory in 'reference', 'library':
-  directory = os.path.join(selected_docs, directory)
-  url = os.path.join(directory, 'index.html')
-  pattern = '<li class="toctree-l[12]"><a class="reference external" href="([^"]+)'
-  print "\rScanning %s" % url,
-  for target in re.findall(pattern, getpage(url)):
-    # Strip fragment identifiers.
-    target = re.sub('#.*$', '', target)
-    # Convert relative to absolute URLs.
-    if target.startswith('/') or not target.startswith('http://'):
-      target = os.path.join(directory, target)
-    if target not in pages:
-      pages.append(target)
+# Make sure the user provided a location to spider.
+if len(sys.argv) < 2:
+  error("Please provide the URL to spider as a command line argument.")
 
-# Create a dictionary with all anchors in the documentation.
+# Validate/munge the location so it points to an index.html page.
+root = sys.argv[1].replace('file://', '')
+if not root.startswith('http://'):
+  root = os.path.realpath(root)
+  if os.path.isdir(root):
+    page = os.path.join(root, 'index.html')
+    if os.path.isfile(root):
+      root = page
+    else:
+      error("Failed to determine index page in %r!", root)
+  elif not os.path.isfile(root):
+    error("The location %r doesn't seem to exist!", root)
+  root = 'file://' + root
+first_page = root
+root = os.path.split(root)[0]
+
+# If the index file already exists, read it so we can merge the results.
 anchors = {}
-duplicates = 0
-for page in sorted(pages):
-  print "\rIndexing %s" % page,
-  for anchor in re.findall('\sid="([^"]+)">', getpage(page)):
-    url = page + '#' + anchor
-    if anchor in anchors:
-      # sys.stderr.write("\rConflicting anchors! (%s and %s)\n" % (anchors[anchor], url))
-      duplicates += 1
-    anchors[anchor] = url
+if os.path.isfile(indexfile):
+  message("Reading existing entries from %s", indexfile)
+  handle = open(indexfile)
+  nfiltered = 0
+  for line in handle:
+    anchor, target = line.strip().split('\t')
+    if target.startswith(root):
+      nfiltered += 1
+    else:
+      anchors[anchor] = target
+  handle.close()
+  message("Read %i and filtered %i entries", len(anchors), nfiltered)
 
-print "\nIndexed %i pages, %i anchors (%i duplicates)" % (len(pages), len(anchors), duplicates)
+# Start from the given location and collect anchors from all related pages.
+queued_pages = [first_page]
+visited_pages = {}
+while queued_pages:
+  location = queued_pages.pop()
+  # Fetch the selected page.
+  try:
+    verbose("Fetching %r", location)
+    handle = urllib.urlopen(location)
+    contents = handle.read()
+    handle.close()
+    if not location.startswith('file://'):
+      # Rate limit fetching of remote pages.
+      time.sleep(1)
+  except:
+    verbose("Failed to fetch %r!", location)
+    continue
+  # Mark the current page as visited so we don't fetch it again.
+  visited_pages[location] = True
+  # Parse the page's HTML to extract links and anchors.
+  verbose("Parsing %r", location)
+  tagsoup = BeautifulSoup(contents)
+  npages = 0
+  for tag in tagsoup.findAll('a', href=True):
+    target = tag['href']
+    # Strip anchors and ignore anchor-only links.
+    target = re.sub('#.*$', '', target)
+    if target:
+      # Convert the link target to an absolute, canonical URL?
+      if not re.match(r'^\w+://', target):
+        target = os.path.join(os.path.split(location)[0], target)
+        scheme, target = target.split('://')
+        target = scheme + '://' + os.path.normpath(target)
+      # Ignore links pointing outside the root URL and don't process any page more than once.
+      if target.startswith(root) and target not in visited_pages and target not in queued_pages:
+        queued_pages.append(target)
+        npages += 1
+  nidents = 0
+  for tag in tagsoup.findAll(True, id=True):
+    anchor = tag['id']
+    if anchor not in anchors:
+      anchors[anchor] = '%s#%s' % (location, anchor)
+      nidents += 1
+    else:
+      verbose("Ignoring identifier %r duplicate target %r!", anchor, location)
+  message("Extracted %i related pages, %i anchors from %r..", npages, nidents, location)
 
-# Finally write a tab-delimited list of (keyword, URL) pairs to the index file.
-index_file = os.path.expanduser(index_file)
-print "Writing index file %s.. " % index_file,
-handle = open(index_file, 'w')
+message("Scanned %i pages, extracted %i anchors", len(visited_pages), len(anchors))
+
+# Write the tab delimited list of (keyword, URL) pairs to the index file.
+message("Writing index file %r", indexfile)
+handle = open(indexfile, 'w')
 bytes_written = 0
-for keyword in sorted(anchors.keys()):
-  url = anchors[keyword]
-  # Convert absolute to relative URLs.
-  if url.startswith(selected_docs):
-    url = url[len(selected_docs):]
-  line = '%s\t%s\n' % (keyword, url)
+for anchor in sorted(anchors.keys()):
+  line = '%s\t%s\n' % (anchor, anchors[anchor])
   handle.write(line)
   bytes_written += len(line)
 handle.close()
-print "OK, wrote", bytes_written / 1024, "KB"
+message("Done, wrote %i KB to %r", bytes_written / 1024, indexfile)
 
 # vim: ts=2 sw=2 et
