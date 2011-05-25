@@ -1,6 +1,6 @@
 " Vim auto-load script
 " Author: Peter Odding <peter@peterodding.com>
-" Last Change: December 19, 2010
+" Last Change: May 25, 2011
 " URL: http://peterodding.com/code/vim/pyref/
 
 let s:script = expand('<sfile>:p:~')
@@ -96,7 +96,7 @@ function! xolox#pyref#lookup(identifier) " {{{1
   endwhile
 
   " As a last resort, try Google's "I'm Feeling Lucky" search.
-  call xolox#open#url('http://google.com/search?btnI&q=python+' . ident)
+  call xolox#misc#open#url('http://google.com/search?btnI&q=python+' . ident)
 
 endfunction
 
@@ -120,7 +120,7 @@ function! s:show_match(url) " {{{1
     let url = substitute(url, '/#', '.html#', '')
     let url = substitute(url, '^http://docs\.djangoproject\.com/en/1\.1', 'file://' . django_docs, '')
   endif
-  call xolox#open#url(url)
+  call xolox#misc#open#url(url)
 endfunction
 
 function! s:get_option(name) " {{{1
