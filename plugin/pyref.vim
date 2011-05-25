@@ -3,7 +3,7 @@
 " Last Change: May 25, 2011
 " URL: http://peterodding.com/code/vim/pyref/
 " License: MIT
-" Version: 0.7.2
+" Version: 0.7.3
 
 " Support for automatic update using the GLVS plug-in.
 " GetLatestVimScripts: 3104 1 :AutoInstall: pyref.zip
@@ -15,13 +15,12 @@ else
   let g:loaded_pyref = 1
 endif
 
+" Make sure the default paths below are compatible with Pathogen.
+let s:plugindir = expand('<sfile>:p:h') . '/../misc/pyref'
+
 " Default location of index file, should be fine in most cases.
 if !exists('g:pyref_index')
-  if xolox#misc#os#is_win()
-    let g:pyref_index = '~/vimfiles/misc/pyref_index'
-  else
-    let g:pyref_index = '~/.vim/misc/pyref_index'
-  endif
+  let g:pyref_index = s:plugindir . '/index'
 endif
 
 " Local Python documentation as installed by e.g. sudo apt-get install python2.6-doc
