@@ -27,7 +27,7 @@ endfunction
 
 function! xolox#pyref#complete(arglead, cmdline, cursorpos) " {{{1
   let entries = map(s:read_index(), 'matchstr(v:val, ''^\S\+'')')
-  let pattern = xolox#escape#pattern(a:arglead)
+  let pattern = xolox#misc#escape#pattern(a:arglead)
   call filter(entries, 'v:val =~ pattern')
   if len(entries) > &lines
     let entries = entries[0 : &lines - 1]
@@ -38,7 +38,7 @@ endfunction
 
 function! xolox#pyref#lookup(identifier) " {{{1
 
-  let ident = xolox#trim(a:identifier)
+  let ident = xolox#misc#str#trim(a:identifier)
 
   " Do something useful when there's nothing at the current position.
   if ident == ''
@@ -101,7 +101,7 @@ function! xolox#pyref#lookup(identifier) " {{{1
 endfunction
 
 function! s:try_lookup(lines, pattern) " {{{1
-  call xolox#debug("%s: Trying to match pattern %s", s:script, a:pattern)
+  call xolox#misc#msg#debug("%s: Trying to match pattern %s", s:script, a:pattern)
   let index = match(a:lines, a:pattern)
   if index >= 0
     let url = split(a:lines[index], '\t')[1]
@@ -137,7 +137,7 @@ function! s:find_index() " {{{1
   let abspath = fnamemodify(g:pyref_index, ':p')
   if !filereadable(abspath)
     let msg = "%s: The index file doesn't exist or isn't readable! (%s)"
-    call xolox#warning(msg, s:script, index)
+    call xolox#misc#msg#warn(msg, s:script, index)
     return
   endif
   return abspath
@@ -148,7 +148,7 @@ function! s:read_index() " {{{1
   try
     return readfile(indexfile)
   catch
-    call xolox#warning("%s: Failed to read index file! (%s)", s:script, indexfile)
+    call xolox#misc#msg#warn("%s: Failed to read index file! (%s)", s:script, indexfile)
     return []
   endtry
 endfunction

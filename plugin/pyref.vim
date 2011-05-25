@@ -1,9 +1,9 @@
 " Vim plug-in
 " Author: Peter Odding <peter@peterodding.com>
-" Last Change: December 19, 2010
+" Last Change: May 25, 2011
 " URL: http://peterodding.com/code/vim/pyref/
 " License: MIT
-" Version: 0.7
+" Version: 0.7.1
 
 " Support for automatic update using the GLVS plug-in.
 " GetLatestVimScripts: 3104 1 :AutoInstall: pyref.zip
@@ -17,7 +17,7 @@ endif
 
 " Default location of index file, should be fine in most cases.
 if !exists('g:pyref_index')
-  if xolox#is_windows()
+  if xolox#misc#os#is_win()
     let g:pyref_index = '~/vimfiles/misc/pyref_index'
   else
     let g:pyref_index = '~/.vim/misc/pyref_index'
