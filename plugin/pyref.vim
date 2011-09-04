@@ -1,14 +1,12 @@
 " Vim plug-in
 " Author: Peter Odding <peter@peterodding.com>
-" Last Change: May 25, 2011
+" Last Change: September 4, 2011
 " URL: http://peterodding.com/code/vim/pyref/
-" License: MIT
-" Version: 0.7.3
 
 " Support for automatic update using the GLVS plug-in.
 " GetLatestVimScripts: 3104 1 :AutoInstall: pyref.zip
 
-" Don't source the plug-in when its already been loaded or &compatible is set.
+" Don't source the plug-in when it's already been loaded or &compatible is set.
 if &cp || exists('g:loaded_pyref')
   finish
 else

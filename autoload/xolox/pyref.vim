@@ -1,8 +1,9 @@
 " Vim auto-load script
 " Author: Peter Odding <peter@peterodding.com>
-" Last Change: May 25, 2011
+" Last Change: September 4, 2011
 " URL: http://peterodding.com/code/vim/pyref/
 
+let g:xolox#pyref#version = '0.7.4'
 let s:script = expand('<sfile>:p:~')
 
 function! xolox#pyref#enable() " {{{1
@@ -101,7 +102,7 @@ function! xolox#pyref#lookup(identifier) " {{{1
 endfunction
 
 function! s:try_lookup(lines, pattern) " {{{1
-  call xolox#misc#msg#debug("%s: Trying to match pattern %s", s:script, a:pattern)
+  call xolox#misc#msg#debug("pyref.vim %s: Trying to match pattern %s", g:xolox#pyref#version, a:pattern)
   let index = match(a:lines, a:pattern)
   if index >= 0
     let url = split(a:lines[index], '\t')[1]
@@ -111,8 +112,8 @@ function! s:try_lookup(lines, pattern) " {{{1
 endfunction
 
 function! s:show_match(url) " {{{1
-  let python_docs = s:get_option('pyref_python')
-  let django_docs = s:get_option('pyref_django')
+  let python_docs = xolox#misc#option#get('pyref_python')
+  let django_docs = xolox#misc#option#get('pyref_django')
   let url = a:url
   if url =~ '^http://docs\.python\.org/' && isdirectory(python_docs)
     let url = substitute(url, '^http://docs\.python\.org', 'file://' . python_docs, '')
@@ -123,21 +124,11 @@ function! s:show_match(url) " {{{1
   call xolox#misc#open#url(url)
 endfunction
 
-function! s:get_option(name) " {{{1
-  if exists('b:' . a:name)
-    return eval('b:' . a:name)
-  elseif exists('g:' . a:name)
-    return eval('g:' . a:name)
-  else
-    return ""
-  endif
-endfunction
-
 function! s:find_index() " {{{1
   let abspath = fnamemodify(g:pyref_index, ':p')
   if !filereadable(abspath)
-    let msg = "%s: The index file doesn't exist or isn't readable! (%s)"
-    call xolox#misc#msg#warn(msg, s:script, index)
+    let msg = "pyref.vim %s: The index file doesn't exist or isn't readable! (%s)"
+    call xolox#misc#msg#warn(msg, g:xolox#pyref#version, index)
     return
   endif
   return abspath
@@ -148,7 +139,7 @@ function! s:read_index() " {{{1
   try
     return readfile(indexfile)
   catch
-    call xolox#misc#msg#warn("%s: Failed to read index file! (%s)", s:script, indexfile)
+    call xolox#misc#msg#warn("pyref.vim %s: Failed to read index file! (%s)", g:xolox#pyref#version, indexfile)
     return []
   endtry
 endfunction
