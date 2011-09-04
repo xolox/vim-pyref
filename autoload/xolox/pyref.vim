@@ -3,7 +3,7 @@
 " Last Change: September 4, 2011
 " URL: http://peterodding.com/code/vim/pyref/
 
-let g:xolox#pyref#version = '0.7.4'
+let g:xolox#pyref#version = '0.7.5'
 let s:script = expand('<sfile>:p:~')
 
 function! xolox#pyref#enable() " {{{1
