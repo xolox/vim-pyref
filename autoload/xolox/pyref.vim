@@ -1,9 +1,9 @@
 " Vim auto-load script
 " Author: Peter Odding <peter@peterodding.com>
-" Last Change: November 21, 2011
+" Last Change: November 26, 2011
 " URL: http://peterodding.com/code/vim/pyref/
 
-let g:xolox#pyref#version = '0.7.7'
+let g:xolox#pyref#version = '0.7.8'
 let s:script = expand('<sfile>:p:~')
 
 function! xolox#pyref#enable() " {{{1
