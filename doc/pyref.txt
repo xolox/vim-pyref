@@ -1,5 +1,23 @@
 *pyref.txt*  Context-sensitive documentation for Python source code in Vim
 
+===============================================================================
+                                                                *pyref-contents*
+Contents ~
+
+ 1. Introduction                                            |pyref-introduction|
+ 2. Install & usage                                        |pyref-install-usage|
+  1. The |g:pyref_mapping| option
+  2. The |g:pyref_python| option
+  3. The |g:pyref_django| option
+  4. The |g:pyref_index| option
+  5. General note about options               |pyref-general-note-about-options|
+ 3. Contact                                                      |pyref-contact|
+ 4. License                                                      |pyref-license|
+
+===============================================================================
+                                                            *pyref-introduction*
+Introduction ~
+
 The 'pyref.vim' script is a plug-in for the Vim text editor that helps you
 look up the documentation for keywords and identifiers from the following
 sources using your web browser:
@@ -100,7 +118,7 @@ If you like the script please vote for it on Vim Online [10].
                                                                  *pyref-license*
 License ~
 
-This software is licensed under the MIT license [11]. Copyright 2011 Peter
+This software is licensed under the MIT license [11]. Copyright 2013 Peter
 Odding <peter@peterodding.com>.
 
 ===============================================================================
