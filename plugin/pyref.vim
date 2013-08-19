@@ -1,6 +1,6 @@
 " Vim plug-in
 " Author: Peter Odding <peter@peterodding.com>
-" Last Change: September 4, 2011
+" Last Change: August 19, 2013
 " URL: http://peterodding.com/code/vim/pyref/
 
 " Support for automatic update using the GLVS plug-in.
@@ -12,6 +12,19 @@ if &cp || exists('g:loaded_pyref')
 else
   let g:loaded_pyref = 1
 endif
+
+" Make sure vim-misc is installed.
+try
+  " The point of this code is to do something completely innocent while making
+  " sure the vim-misc plug-in is installed. We specifically don't use Vim's
+  " exists() function because it doesn't load auto-load scripts that haven't
+  " already been loaded yet (last tested on Vim 7.3).
+  call type(g:xolox#misc#version)
+catch
+  echomsg "Warning: The vim-pyref plug-in requires the vim-misc plug-in which seems not to be installed! For more information please review the installation instructions in the readme (also available on the homepage and on GitHub). The vim-pyref plug-in will now be disabled."
+  let g:loaded_pyref = 1
+  finish
+endtry
 
 " Make sure the default paths below are compatible with Pathogen.
 let s:plugindir = expand('<sfile>:p:h') . '/../misc/pyref'
