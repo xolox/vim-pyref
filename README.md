@@ -6,7 +6,7 @@ The `pyref.vim` script is a plug-in for the [Vim text editor](http://www.vim.org
  * [Python library reference](http://docs.python.org/library/)
  * [Django documentation](http://docs.djangoproject.com/)
 
-The `:PyRef` command looks up the identifier given as an argument while the `<F1>` mapping (only available in Python buffers) looks up the item under the text cursor. The lookup works by scanning through a special index file which is included in the ZIP archive below, but you can also create/update the index yourself using the Python script [spider.py](http://github.com/xolox/vim-pyref/blob/master/spider.py).
+The `:PyRef` command looks up the identifier given as an argument while the `<F1>` mapping (only available in Python buffers) looks up the item under the text cursor. The lookup works by scanning through a special index file which is included in the ZIP archive below, but you can also create/update the index yourself using the Python script [spider.py](https://github.com/xolox/vim-pyref/blob/master/misc/pyref/spider.py).
 
 ## Install & usage
 
@@ -14,7 +14,7 @@ The `:PyRef` command looks up the identifier given as an argument while the `<F1
 
 Unzip the most recent ZIP archives of the [vim-pyref] [download-pyref] and [vim-misc] [download-misc] plug-ins inside your Vim profile directory (usually this is `~/.vim` on UNIX and `%USERPROFILE%\vimfiles` on Windows), restart Vim and execute the command `:helptags ~/.vim/doc` (use `:helptags ~\vimfiles\doc` instead on Windows).
 
-If you prefer you can also use [Pathogen] [pathogen], [Vundle] [vundle] or a similar tool to install & update the [vim-pyref] [github-pyref] and [vim-misc] [github-misc] plug-ins using a local clone of the git repository.
+If you prefer you can also use [pathogen], [vundle], [vim-plug] or a similar tool to install & update the [vim-pyref] [github-pyref] and [vim-misc] [github-misc] plug-ins using a local clone of the git repository.
 
 Now try it out: Open a Python script and press the `<F1>` key on something interesting. If it doesn't work or you want to change how it works, see the options documented below.
 
@@ -24,6 +24,7 @@ Now try it out: Open a Python script and press the `<F1>` key on something inter
 [github-pyref]: http://github.com/xolox/vim-pyref
 [pathogen]: http://www.vim.org/scripts/script.php?script_id=2332
 [vundle]: https://github.com/gmarik/vundle
+[vim-plug]: https://www.vim.org/scripts/script.php?script_id=4828
 
 ### The `g:pyref_mapping` option
 
